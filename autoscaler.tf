@@ -23,7 +23,7 @@ resource "helm_release" "autoscaler" {
 
   set {
     name  = "autoscalingGroups[0].name"
-    value = var.general_asg
+    value = var.general_asg_name
   }
   set {
     name  = "autoscalingGroups[0].minSize"
@@ -35,7 +35,7 @@ resource "helm_release" "autoscaler" {
   }
   set {
     name  = "autoscalingGroups[1].name"
-    value = var.runner_asg
+    value = var.runner_asg_name
   }
   set {
     name  = "autoscalingGroups[1].minSize"

@@ -23,8 +23,8 @@ variable "helm_name" {
   default = "auto-scaler"
 }
 
-variable "general_asg" {}
-variable "runner_asg" {}
+variable "general_asg_name" {}
+variable "runner_asg_name" {}
 
 variable "general_asg_min" {
   default = "1"
