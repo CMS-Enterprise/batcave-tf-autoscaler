@@ -41,3 +41,17 @@ variable "runner_asg_min" {
 variable "runner_asg_max" {
   default = "5"
 }
+
+# ENIConfig Variables
+variable "vpc_eni_subnets" {
+  type = map(any)
+}
+
+variable "worker_security_group_id" {
+  type = string
+}
+
+variable "rotate_nodes_after_eniconfig_creation" {
+  type = bool
+  default = true
+}
