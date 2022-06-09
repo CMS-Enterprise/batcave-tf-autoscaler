@@ -22,7 +22,9 @@ resource "null_resource" "eniconfig_daemonsets" {
     helm_release.autoscaler
   ]
 
-  count = var.rotate_nodes_after_eniconfig_creation ? 1 : 0
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command = <<-EOT
@@ -63,6 +65,10 @@ resource "null_resource" "rotate_nodes_after_eniconfig_creation" {
   ]
 
   count = var.rotate_nodes_after_eniconfig_creation ? 1 : 0
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
 
   provisioner "local-exec" {
     command = <<-EOT
