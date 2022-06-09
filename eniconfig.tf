@@ -17,12 +17,28 @@ provider "kubernetes" {
   }
 }
 
+resource "null_resource" "eniconfig_daemonsets" {
+  depends_on = [
+    helm_release.autoscaler
+  ]
+
+  count = var.rotate_nodes_after_eniconfig_creation ? 1 : 0
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      kubectl set env daemonset aws-node -n kube-system AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=true
+      kubectl set env daemonset aws-node -n kube-system ENI_CONFIG_LABEL_DEF=failure-domain.beta.kubernetes.io/zone
+    EOT
+  }
+
+}
+
 resource "kubernetes_manifest" "eniconfig_subnets"{
 
   for_each = var.vpc_eni_subnets
 
   depends_on = [
-    helm_release.autoscaler
+    null_resource.eniconfig_daemonsets
   ]
 
   manifest = {
@@ -32,7 +48,7 @@ resource "kubernetes_manifest" "eniconfig_subnets"{
       "name" = "${each.key}"
     }
     "spec" = {
-      "subnet" = "eni-${each.value}"
+      "subnet" = "${each.value}"
       "securityGroups" = [
         "${var.worker_security_group_id}"
       ]
@@ -42,6 +58,9 @@ resource "kubernetes_manifest" "eniconfig_subnets"{
 }
 
 resource "null_resource" "rotate_nodes_after_eniconfig_creation" {
+  depends_on = [
+    kubernetes_manifest.eniconfig_subnets
+  ]
 
   count = var.rotate_nodes_after_eniconfig_creation ? 1 : 0
 
