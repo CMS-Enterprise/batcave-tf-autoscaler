@@ -32,7 +32,7 @@ resource "kubernetes_manifest" "eniconfig_subnets"{
       "name" = "${each.key}"
     }
     "spec" = {
-      "subnet" = "eni-${each.value}"
+      "subnet" = "${each.value}"
       "securityGroups" = [
         "${var.worker_security_group_id}"
       ]
