@@ -35,12 +35,55 @@ resource "null_resource" "eniconfig_daemonsets" {
 
 }
 
+resource "kubernetes_manifest" "eni_crd" {
+
+  depends_on = [
+    null_resource.eniconfig_daemonsets
+  ]
+
+  manifest = {
+    apiVersion = "apiextensions.k8s.io/v1"
+    kind = "CustomResourceDefinition"
+    metadata = {
+      name = "eniconfigs.crd.k8s.amazonaws.com"
+      labels = {
+        "app.kubernetes.io/name" = "aws-node"
+        "app.kubernetes.io/instance" = "aws-vpc-cni"
+        "app.kubernetes.io/version" = "v1.10.1"
+        "k8s-app" = "aws-node"
+      }
+    }
+    spec = {
+      scope = "Cluster"
+      group = "crd.k8s.amazonaws.com"
+      preserveUnknownFields = false
+      versions = [{
+        name = "v1alpha1"
+        served = true
+        storage = true
+        schema = {
+          openAPIV3Schema = {
+            type = "object"
+            x-kubernetes-preserve-unknown-fields = true
+          }
+        }
+      }]
+      names = {
+        plural = "eniconfigs"
+        singular = "eniconfig"
+        kind = "ENIConfig"
+      }
+    }
+
+  }
+}
+
 resource "kubernetes_manifest" "eniconfig_subnets"{
 
   for_each = var.vpc_eni_subnets
 
   depends_on = [
-    null_resource.eniconfig_daemonsets
+    kubernetes_manifest.eni_crd
   ]
 
   manifest = {
