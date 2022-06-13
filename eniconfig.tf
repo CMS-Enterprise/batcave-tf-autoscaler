@@ -17,31 +17,9 @@ provider "kubernetes" {
   }
 }
 
-resource "null_resource" "eniconfig_daemonsets" {
-  depends_on = [
-    helm_release.autoscaler
-  ]
-
-  triggers = {
-    always_run = "${timestamp()}"
-  }
-
-  provisioner "local-exec" {
-    command = <<-EOT
-      kubectl set env daemonset aws-node -n kube-system AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=true
-      kubectl set env daemonset aws-node -n kube-system ENI_CONFIG_LABEL_DEF=failure-domain.beta.kubernetes.io/zone
-    EOT
-  }
-
-}
-
 resource "kubernetes_manifest" "eniconfig_subnets"{
 
   for_each = var.vpc_eni_subnets
-
-  depends_on = [
-    null_resource.eniconfig_daemonsets
-  ]
 
   manifest = {
     "apiVersion" = "crd.k8s.amazonaws.com/v1alpha1"
@@ -53,6 +31,16 @@ resource "kubernetes_manifest" "eniconfig_subnets"{
       "subnet" = "${each.value}"
       "securityGroups" = [
         "${var.worker_security_group_id}"
+      ]
+      "env" = [
+        { 
+        "name" = "AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG"
+        "value" = "true"
+        },
+        { 
+        "name" = "ENI_CONFIG_LABEL_DEF"
+        "value" = "failure-domains.beta.kubernetes.io/zone"
+        }
       ]
     }
   }
