@@ -17,9 +17,31 @@ provider "kubernetes" {
   }
 }
 
+resource "null_resource" "eniconfig_daemonsets" {
+  depends_on = [
+    helm_release.autoscaler
+  ]
+
+  triggers = {
+    always_run = "${timestamp()}"
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+    kubectl set env daemonset aws-node -n kube-system AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG=true
+    kubectl set env daemonset aws-node -n kube-system ENI_CONFIG_LABEL_DEF=failure-domain.beta.kubernetes.io/zone
+    EOT
+  }
+
+}
+
 resource "kubernetes_manifest" "eniconfig_subnets"{
 
   for_each = var.vpc_eni_subnets
+
+  depends_on = [
+    kubernetes_manifest.eni_crd
+  ]
 
   manifest = {
     "apiVersion" = "crd.k8s.amazonaws.com/v1alpha1"
@@ -34,12 +56,12 @@ resource "kubernetes_manifest" "eniconfig_subnets"{
       ]
       "env" = [
         { 
-        "name" = "AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG"
-        "value" = "true"
+          "name" = "AWS_VPC_K8S_CNI_CUSTOM_NETWORK_CFG"
+          "value" = "true"
         },
         { 
-        "name" = "ENI_CONFIG_LABEL_DEF"
-        "value" = "failure-domains.beta.kubernetes.io/zone"
+          "name" = "ENI_CONFIG_LABEL_DEF"
+          "value" = "failure-domains.beta.kubernetes.io/zone"
         }
       ]
     }
@@ -60,7 +82,7 @@ resource "null_resource" "rotate_nodes_after_eniconfig_creation" {
 
   provisioner "local-exec" {
     command = <<-EOT
-      aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --filter "Name=tag:Name,Values=$CLUSTER_NAME-general" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].[InstanceId]" --output text) --output text
+    aws ec2 terminate-instances --instance-ids $(aws ec2 describe-instances --filter "Name=tag:Name,Values=$CLUSTER_NAME-general" "Name=instance-state-name,Values=running" --query "Reservations[].Instances[].[InstanceId]" --output text) --output text
     EOT
   }
 
