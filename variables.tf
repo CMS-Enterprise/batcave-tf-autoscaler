@@ -40,7 +40,7 @@ variable "runner_asg_min" {
   default = "0"
 }
 
-variable "runner_asg max" {
+variable "runner_asg_max" {
   default = "0"
 }
 
