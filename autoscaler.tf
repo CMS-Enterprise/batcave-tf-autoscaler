@@ -63,14 +63,19 @@ resource "helm_release" "autoscaler" {
   }
 
   set {
-    dynamic "toleration" {
-      for_each = var.tolerations
-      content {
-        key      = toleration.value["key"]
-        operator = toleration.value["operator"]
-        effect   = toleration.value["effect"]
-      }
-    }
+    name  = "tolerations[0].key"
+    value = "CriticalAddonsOnly"
   }
+
+  set {
+    name  = "tolerations[0].operator"
+    value = "Equal"
+  }
+
+  set {
+    name  = "tolerations[0].effect"
+    value = "NoSchedule"
+  }
+
 }
 
