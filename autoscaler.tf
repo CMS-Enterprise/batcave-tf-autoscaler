@@ -61,5 +61,21 @@ resource "helm_release" "autoscaler" {
     name  = "resources.requests.memory"
     value = "500m"
   }
+
+  set {
+    name  = "tolerations[0].key"
+    value = "shared"
+  }
+
+  set {
+    name  = "tolerations[0].operator"
+    value = "Equal"
+  }
+
+  set {
+    name  = "tolerations[0].effect"
+    value = "NoSchedule"
+  }
+
 }
 
