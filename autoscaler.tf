@@ -68,7 +68,6 @@ resource "helm_release" "autoscaler" {
       content {
         key      = toleration.value["key"]
         operator = toleration.value["operator"]
-        value    = toleration.value["value"]
         effect   = toleration.value["effect"]
       }
     }
