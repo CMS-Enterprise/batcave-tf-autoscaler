@@ -69,7 +69,7 @@ resource "helm_release" "autoscaler" {
 
   set {
     name  = "tolerations[0].operator"
-    value = "Equal"
+    value = "Exists"
   }
 
   set {
