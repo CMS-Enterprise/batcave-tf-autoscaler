@@ -40,6 +40,10 @@ variable "runner_asg_min" {
   default = "0"
 }
 
+variable "runner_asg max" {
+  default = "0"
+}
+
 variable "batcave_website_asg_max" {
   default = "5"
 }
@@ -56,9 +60,6 @@ variable "batcave_nightlight_asg_min" {
   default = "1"
 }
 
-variable "batcave_nightlight_asg_max" {
-  default = "5"
-}
 
 # ENIConfig Variables
 variable "vpc_eni_subnets" {
