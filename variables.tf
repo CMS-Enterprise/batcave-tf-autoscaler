@@ -55,3 +55,15 @@ variable "rotate_nodes_after_eniconfig_creation" {
   type = bool
   default = true
 }
+
+variable "tolerations" {
+  type = list(map(String))
+  default = [
+    {
+      key = "CriticalAddonsOnly"
+      operator = "Equal"
+      effect = "NoSchedule"
+    }
+  ]
+  description = "tolerations for autoscaler"
+}
