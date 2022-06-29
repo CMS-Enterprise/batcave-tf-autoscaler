@@ -56,7 +56,7 @@ variable "batcave_nightlight_asg_min" {
   default = "1"
 }
 
-variable "general_asg_max" {
+variable "batcave_nightlight_asg_max" {
   default = "5"
 }
 
