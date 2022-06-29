@@ -64,7 +64,7 @@ resource "helm_release" "autoscaler" {
 
   set {
     name  = "tolerations[0].key"
-    value = "shared"
+    value = "CriticalAddonsOnly"
   }
 
   set {
