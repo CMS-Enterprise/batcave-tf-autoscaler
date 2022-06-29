@@ -57,7 +57,7 @@ variable "rotate_nodes_after_eniconfig_creation" {
 }
 
 variable "tolerations" {
-  type = list(map(String))
+  type = list(map(string))
   default = [
     {
       key = "CriticalAddonsOnly"
