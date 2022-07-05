@@ -25,8 +25,12 @@ variable "helm_name" {
 
 variable "general_asg_name" {}
 variable "runner_asg_name" {}
-variable "batcave_website_asg_name" {}
-variable "batcave_nightlight_asg_name" {}
+variable "batcave_website_asg_name" {
+  default = ""
+}
+variable "batcave_nightlight_asg_name" {
+  default = ""
+}
 
 variable "general_asg_min" {
   default = "1"

@@ -45,31 +45,51 @@ resource "helm_release" "autoscaler" {
     name  = "autoscalingGroups[1].maxSize"
     value = var.runner_asg_max
   }
-  set {
-    name  = "autoscalingGroups[2].name"
-    value = var.batcave_website_asg_name
+
+  dynamic "set" {
+    for_each = var.batcave_website_asg_name != "" ? [var.batcave_website_asg_name] : []
+    content {
+      name  = "autoscalingGroups[2].name"
+      value = var.batcave_website_asg_name
+    }
   }
-  set {
-    name  = "autoscalingGroups[2].minSize"
-    value = var.batcave_website_asg_min
+  dynamic "set" {
+    for_each = var.batcave_website_asg_name != "" ? [var.batcave_website_asg_name] : []
+    content {
+      name  = "autoscalingGroups[2].minSize"
+      value = var.batcave_website_asg_min
+    }
   }
-  set {
-    name  = "autoscalingGroups[2].maxSize"
-    value = var.batcave_website_asg_max
-  }
-  set {
-    name  = "autoscalingGroups[3].name"
-    value = var.batcave_nightlight_asg_name
-  }
-  set {
-    name  = "autoscalingGroups[3].minSize"
-    value = var.batcave_nightlight_asg_min
-  }
-  set {
-    name  = "autoscalingGroups[3].maxSize"
-    value = var.batcave_nightlight_asg_max
+  dynamic "set" {
+    for_each = var.batcave_website_asg_name != "" ? [var.batcave_website_asg_name] : []
+    content {
+      name  = "autoscalingGroups[2].maxSize"
+      value = var.batcave_website_asg_max
+    }
   }
 
+  dynamic "set" {
+    for_each = var.batcave_nightlight_asg_name != "" ? [var.batcave_nightlight_asg_name] : []
+    content {
+      name  = "autoscalingGroups[3].name"
+      value = var.batcave_nightlight_asg_name
+    }
+  }
+  dynamic "set" {
+    for_each = var.batcave_nightlight_asg_name != "" ? [var.batcave_nightlight_asg_name] : []
+    content {
+      name  = "autoscalingGroups[3].minSize"
+      value = var.batcave_nightlight_asg_min
+    }
+  }
+  dynamic "set" {
+    for_each = var.batcave_nightlight_asg_name != "" ? [var.batcave_nightlight_asg_name] : []
+    content {
+      name  = "autoscalingGroups[3].maxSize"
+      value = var.batcave_nightlight_asg_max
+    }
+  }
+  
   set {
     name  = "resources.limits.cpu"
     value = "1"
