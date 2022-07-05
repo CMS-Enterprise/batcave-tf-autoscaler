@@ -46,6 +46,31 @@ resource "helm_release" "autoscaler" {
     value = var.runner_asg_max
   }
   set {
+    name  = "autoscalingGroups[2].name"
+    value = var.batcave_website_asg_name
+  }
+  set {
+    name  = "autoscalingGroups[2].minSize"
+    value = var.batcave_website_asg_min
+  }
+  set {
+    name  = "autoscalingGroups[2].maxSize"
+    value = var.batcave_website_asg_max
+  }
+  set {
+    name  = "autoscalingGroups[3].name"
+    value = var.batcave_nightlight_asg_name
+  }
+  set {
+    name  = "autoscalingGroups[3].minSize"
+    value = var.batcave_nightlight_asg_min
+  }
+  set {
+    name  = "autoscalingGroups[3].maxSize"
+    value = var.batcave_nightlight_asg_max
+  }
+
+  set {
     name  = "resources.limits.cpu"
     value = "1"
   }
@@ -61,5 +86,21 @@ resource "helm_release" "autoscaler" {
     name  = "resources.requests.memory"
     value = "500m"
   }
+
+  set {
+    name  = "tolerations[0].key"
+    value = "CriticalAddonsOnly"
+  }
+
+  set {
+    name  = "tolerations[0].operator"
+    value = "Exists"
+  }
+
+  set {
+    name  = "tolerations[0].effect"
+    value = "NoSchedule"
+  }
+
 }
 

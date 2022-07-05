@@ -25,6 +25,8 @@ variable "helm_name" {
 
 variable "general_asg_name" {}
 variable "runner_asg_name" {}
+variable "batcave_website_asg_name" {}
+variable "batcave_nightlight_asg_name" {}
 
 variable "general_asg_min" {
   default = "1"
@@ -39,8 +41,25 @@ variable "runner_asg_min" {
 }
 
 variable "runner_asg_max" {
+  default = "0"
+}
+
+variable "batcave_website_asg_max" {
   default = "5"
 }
+
+variable "batcave_website_asg_min" {
+  default = "1"
+}
+
+variable "batcave_nightlight_asg_max" {
+  default = "5"
+}
+
+variable "batcave_nightlight_asg_min" {
+  default = "1"
+}
+
 
 # ENIConfig Variables
 variable "vpc_eni_subnets" {
