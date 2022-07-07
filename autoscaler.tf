@@ -14,6 +14,15 @@ provider "helm" {
   }
 }
 
+locals {
+  # List of all node_sets except general (to ensure general is always [0])
+  self_managed_node_sets = [for k, v in var.self_managed_node_groups : {
+    name    = v.autoscaling_group_name
+    minSize = v.autoscaling_group_max_size
+    maxSize = v.autoscaling_group_min_size
+    } if k != "general"
+  ]
+}
 resource "helm_release" "autoscaler" {
   namespace = var.helm_namespace
 
@@ -21,55 +30,42 @@ resource "helm_release" "autoscaler" {
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
 
+  # Ensure general is the first autoscaling Group
   set {
     name  = "autoscalingGroups[0].name"
-    value = var.general_asg_name
+    value = var.self_managed_node_groups.general.autoscaling_group_name
   }
   set {
     name  = "autoscalingGroups[0].minSize"
-    value = var.general_asg_min
+    value = var.self_managed_node_groups.general.autoscaling_group_min_size
   }
   set {
     name  = "autoscalingGroups[0].maxSize"
-    value = var.general_asg_max
-  }
-  set {
-    name  = "autoscalingGroups[1].name"
-    value = var.runner_asg_name
-  }
-  set {
-    name  = "autoscalingGroups[1].minSize"
-    value = var.runner_asg_min
-  }
-  set {
-    name  = "autoscalingGroups[1].maxSize"
-    value = var.runner_asg_max
-  }
-  set {
-    name  = "autoscalingGroups[2].name"
-    value = var.batcave_website_asg_name
-  }
-  set {
-    name  = "autoscalingGroups[2].minSize"
-    value = var.batcave_website_asg_min
-  }
-  set {
-    name  = "autoscalingGroups[2].maxSize"
-    value = var.batcave_website_asg_max
-  }
-  set {
-    name  = "autoscalingGroups[3].name"
-    value = var.batcave_nightlight_asg_name
-  }
-  set {
-    name  = "autoscalingGroups[3].minSize"
-    value = var.batcave_nightlight_asg_min
-  }
-  set {
-    name  = "autoscalingGroups[3].maxSize"
-    value = var.batcave_nightlight_asg_max
+    value = var.self_managed_node_groups.general.autoscaling_group_max_size
   }
 
+  # Iterate over the rest of the self_managed_node_groups
+  dynamic "set" {
+    for_each = local.self_managed_node_sets
+    content {
+      name  = "autoscalingGroups[${set.key + 1}].name"
+      value = set.value.name
+    }
+  }
+  dynamic "set" {
+    for_each = local.self_managed_node_sets
+    content {
+      name  = "autoscalingGroups[${set.key + 1}].minSize"
+      value = set.value.minSize
+    }
+  }
+  dynamic "set" {
+    for_each = local.self_managed_node_sets
+    content {
+      name  = "autoscalingGroups[${set.key + 1}].maxSize"
+      value = set.value.maxSize
+    }
+  }
   set {
     name  = "resources.limits.cpu"
     value = "1"

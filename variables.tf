@@ -23,43 +23,9 @@ variable "helm_name" {
   default = "auto-scaler"
 }
 
-variable "general_asg_name" {}
-variable "runner_asg_name" {}
-variable "batcave_website_asg_name" {}
-variable "batcave_nightlight_asg_name" {}
-
-variable "general_asg_min" {
-  default = "1"
+variable "self_managed_node_groups" {
+  type = map(any)
 }
-
-variable "general_asg_max" {
-  default = "5"
-}
-
-variable "runner_asg_min" {
-  default = "0"
-}
-
-variable "runner_asg_max" {
-  default = "0"
-}
-
-variable "batcave_website_asg_max" {
-  default = "5"
-}
-
-variable "batcave_website_asg_min" {
-  default = "1"
-}
-
-variable "batcave_nightlight_asg_max" {
-  default = "5"
-}
-
-variable "batcave_nightlight_asg_min" {
-  default = "1"
-}
-
 
 # ENIConfig Variables
 variable "vpc_eni_subnets" {
@@ -71,6 +37,6 @@ variable "worker_security_group_id" {
 }
 
 variable "rotate_nodes_after_eniconfig_creation" {
-  type = bool
+  type    = bool
   default = true
 }
