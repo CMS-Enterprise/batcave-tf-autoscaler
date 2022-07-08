@@ -22,6 +22,6 @@ resource "aws_iam_policy" "batcave_autoscaler" {
 }
 
 resource "aws_iam_role_policy_attachment" "autoscaler_policy_attachment" {
-  role       = var.worker_iam_role_name
+  role       = var.self_managed_node_groups.general.iam_role_name
   policy_arn = aws_iam_policy.batcave_autoscaler.arn
 }
