@@ -18,8 +18,8 @@ locals {
   # List of all node_sets except general (to ensure general is always [0])
   self_managed_node_sets = [for k, v in var.self_managed_node_groups : {
     name    = v.autoscaling_group_name
-    minSize = v.autoscaling_group_max_size
-    maxSize = v.autoscaling_group_min_size
+    minSize = v.autoscaling_group_min_size
+    maxSize = v.autoscaling_group_max_size
     } if k != "general"
   ]
 }
