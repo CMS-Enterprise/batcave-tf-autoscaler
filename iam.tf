@@ -27,11 +27,6 @@ resource "aws_iam_policy" "batcave_autoscaler" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "autoscaler_policy_attachment" {
-  role       = var.self_managed_node_groups.general.iam_role_name
-  policy_arn = aws_iam_policy.batcave_autoscaler.arn
-}
-
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
   create_role                   = true
