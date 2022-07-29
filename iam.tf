@@ -33,7 +33,6 @@ resource "aws_iam_role_policy_attachment" "autoscaler_policy_attachment" {
 
 module "iam_assumable_role_admin" {
   source                        = "terraform-aws-modules/iam/aws//modules/iam-assumable-role-with-oidc"
-  version                       = "~> v2.6.0"
   create_role                   = true
   role_name                     = "cluster-autoscaler"
   provider_url                  = replace(var.oidc_issuer_url, "https://", "")
