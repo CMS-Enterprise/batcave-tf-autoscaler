@@ -82,14 +82,14 @@ resource "helm_release" "autoscaler" {
     value = "NoSchedule"
   }
 
-  set {
-    name = "rbac.create"
-    value = "true"
-  }
+  # set {
+  #   name = "rbac.create"
+  #   value = "true"
+  # }
 
-  set  {
-    name = "rbac.serviceAccountAnnotations.eks\\.amazonaws\\.com/role-arn"
-    value = "arn:aws:iam::373346310182:role/cluster-autoscaler"
-  }
+  # set  {
+  #   name = "rbac.serviceAccountAnnotations.eks\\.amazonaws\\.com/role-arn"
+  #   value = "arn:aws:iam::373346310182:role/cluster-autoscaler"
+  # }
 }
 
