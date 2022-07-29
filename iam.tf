@@ -11,6 +11,7 @@ module "iam_assumable_role_admin" {
   role_policy_arns              = [aws_iam_policy.cluster_autoscaler.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${local.k8s_service_account_namespace}:${local.k8s_service_account_name}"]
   role_permissions_boundary_arn = "arn:aws:iam::373346310182:policy/cms-cloud-admin/developer-boundary-policy"
+  role_path                     = "/delegatedadmin/developer/"
 }
 
 resource "aws_iam_policy" "cluster_autoscaler" {
