@@ -15,6 +15,7 @@ module "iam_assumable_role_admin" {
 
 resource "aws_iam_policy" "cluster_autoscaler" {
   name_prefix = "cluster-autoscaler"
+  path        = "/delegatedadmin/developer/"
   description = "EKS cluster-autoscaler policy for cluster ${var.cluster_name}"
   policy      = data.aws_iam_policy_document.cluster_autoscaler.json
 }
