@@ -2,14 +2,14 @@ autoscalingGroups:
 - maxSize: 10
   minSize: 1
   name: srii-general-20220726140815014000000028
-# - maxSize: 0
-#   minSize: 0
-#   name: srii-runners-20220726140815017000000029
-# rbac:
-#   create: true
-#   serviceAccount:
-#     Annotations:
-#       eks.amazonaws.com/role-arn: "arn:aws:iam::373346310182:role/cluster-autoscaler"
+- maxSize: 0
+  minSize: 0
+  name: srii-runners-20220726140815017000000029
+rbac:
+  create: true
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::373346310182:role/delegatedadmin/developer/cluster-autoscaler"
 resources:
   limits:
     cpu: 1

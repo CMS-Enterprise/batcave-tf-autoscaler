@@ -87,9 +87,9 @@ resource "helm_release" "autoscaler" {
     value = "true"
   }
 
-  # set  {
-  #   name = "rbac.serviceAccountAnnotations.eks\\.amazonaws\\.com/role-arn"
-  #   value = "arn:aws:iam::373346310182:role/cluster-autoscaler"
-  # }
+  set  {
+    name = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = "arn:aws:iam::373346310182:role/delegatedadmin/developer/cluster-autoscaler"
+  }
 }
 
