@@ -17,7 +17,7 @@ resource "aws_iam_policy" "batcave_autoscaler" {
           "autoscaling:DescribeTags",
           "autoscaling:SetDesiredCapacity",
           "autoscaling:TerminateInstanceInAutoScalingGroup",
-          "ec2:Describe*"
+          "ec2:*"
         ]
         Effect   = "Allow"
         Resource = "*"
