@@ -43,6 +43,4 @@ variable "rotate_nodes_after_eniconfig_creation" {
   default = true
 }
 
-variable "oidc_issuer_url" {
-  default = "https://oidc.eks.us-east-1.amazonaws.com/id/1A7C941D7D8951F3894262C3E05530F2"
-}
+variable "cluster_oidc_issuer_url " {}
