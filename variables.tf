@@ -44,5 +44,5 @@ variable "rotate_nodes_after_eniconfig_creation" {
 }
 
 variable "oidc_issuer_url" {
-  default = "https://oidc.eks.us-east-1.amazonaws.com/id/6343F22A9AD99C83F9F9E15A63DF5884"
+  default = "https://oidc.eks.us-east-1.amazonaws.com/id/1A7C941D7D8951F3894262C3E05530F2"
 }
