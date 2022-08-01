@@ -1,3 +1,7 @@
+data "aws_eks_cluster" "cluster" {
+  name = var.cluster_name
+}
+
 data "aws_eks_cluster_auth" "cluster" {
   name = var.cluster_name
 }
@@ -5,17 +9,13 @@ data "aws_eks_cluster_auth" "cluster" {
 provider "helm" {
   kubernetes {
     host                   = var.cluster_endpoint
-    cluster_ca_certificate = base64decode(var.cluster_ca_cert)
-    exec {
-      api_version = "client.authentication.k8s.io/v1alpha1"
-      args        = ["eks", "get-token", "--cluster-name", var.cluster_name]
-      command     = "aws"
-    }
+    cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.cluster_certificate_authority_data)
+    token = data.aws_eks_cluster_auth.cluster.token
   }
 }
 
 provider "kubernetes" {
   host                   = var.cluster_endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster_auth.cluster.cluster_certificate_authority_data)
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.cluster.cluster_certificate_authority_data)
   token = data.aws_eks_cluster_auth.cluster.token
 }
