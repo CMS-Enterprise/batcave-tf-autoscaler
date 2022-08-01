@@ -13,7 +13,9 @@ resource "helm_release" "autoscaler" {
   name       = "autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
-
+  
+  depends_on = [module.eks]
+  
   # Ensure general is the first autoscaling Group
   set {
     name  = "autoscalingGroups[0].name"
