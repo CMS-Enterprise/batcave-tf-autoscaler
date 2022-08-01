@@ -34,6 +34,6 @@ module "iam_assumable_role_admin" {
   provider_url                  = replace(var.cluster_oidc_issuer_url , "https://", "")
   role_policy_arns              = [aws_iam_policy.batcave_autoscaler.arn]
   oidc_fully_qualified_subjects = ["system:serviceaccount:${local.k8s_service_account_namespace}:${local.k8s_service_account_name}"]
-  role_path                     = "/delegatedadmin/developer/"
-  role_permissions_boundary_arn = "arn:aws:iam::373346310182:policy/cms-cloud-admin/developer-boundary-policy"
+  role_path                     = var.iam_path
+  role_permissions_boundary_arn = var.permissions_boundary
 }
