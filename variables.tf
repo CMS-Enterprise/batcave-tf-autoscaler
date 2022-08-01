@@ -43,4 +43,4 @@ variable "rotate_nodes_after_eniconfig_creation" {
   default = true
 }
 
-variable "cluster_oidc_issuer_url " {}
+variable "cluster_oidc_issuer_url" {}
