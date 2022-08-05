@@ -82,5 +82,14 @@ resource "helm_release" "autoscaler" {
     value = "NoSchedule"
   }
 
+  set {
+    name = "rbac.create"
+    value = "true"
+  }
+
+  set  {
+    name = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+    value = module.iam_assumable_role_admin.iam_role_arn
+  }
 }
 

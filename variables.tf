@@ -42,3 +42,5 @@ variable "rotate_nodes_after_eniconfig_creation" {
   type    = bool
   default = true
 }
+
+variable "cluster_oidc_issuer_url" {}
