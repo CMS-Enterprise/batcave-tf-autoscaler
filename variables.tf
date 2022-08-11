@@ -46,13 +46,13 @@ variable "rotate_nodes_after_eniconfig_creation" {
 variable "cluster_oidc_issuer_url" {}
 
 variable "autoscaler_expander_method" {
-  default = "least-waste"
-  type = string
+  default     = "least-waste"
+  type        = string
   description = "Method by which CA will select a new instance to launch. Current options: random, most-pods, least-waste. See: https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/FAQ.md#what-are-expanders"
 }
 
 variable "extraArgs" {
-  default = {}
-  type = map(any)
+  default     = {}
+  type        = map(any)
   description = "List of extraArgs values to pass to the autoscaler chart.  See: https://github.com/kubernetes/autoscaler/blob/master/charts/cluster-autoscaler/values.yaml#L165"
 }
