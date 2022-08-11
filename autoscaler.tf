@@ -91,5 +91,18 @@ resource "helm_release" "autoscaler" {
     name = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
     value = module.iam_assumable_role_admin.iam_role_arn
   }
+
+  set {
+    name = "extraArgs.expander"
+    value = var.autoscaler_expander_method
+  }
+
+  dynamic "set" {
+    for_each = var.extraArgs
+    content {
+      name = "extraArgs.${set.key}"
+      value = set.value
+    }
+  }
 }
 
