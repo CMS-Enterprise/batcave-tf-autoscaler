@@ -14,41 +14,9 @@ resource "helm_release" "autoscaler" {
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
 
-  # Ensure general is the first autoscaling Group
   set {
-    name  = "autoscalingGroups[0].name"
-    value = var.self_managed_node_groups.general.autoscaling_group_name
-  }
-  set {
-    name  = "autoscalingGroups[0].minSize"
-    value = var.self_managed_node_groups.general.autoscaling_group_min_size
-  }
-  set {
-    name  = "autoscalingGroups[0].maxSize"
-    value = var.self_managed_node_groups.general.autoscaling_group_max_size
-  }
-
-  # Iterate over the rest of the self_managed_node_groups
-  dynamic "set" {
-    for_each = local.self_managed_node_sets
-    content {
-      name  = "autoscalingGroups[${set.key + 1}].name"
-      value = set.value.name
-    }
-  }
-  dynamic "set" {
-    for_each = local.self_managed_node_sets
-    content {
-      name  = "autoscalingGroups[${set.key + 1}].minSize"
-      value = set.value.minSize
-    }
-  }
-  dynamic "set" {
-    for_each = local.self_managed_node_sets
-    content {
-      name  = "autoscalingGroups[${set.key + 1}].maxSize"
-      value = set.value.maxSize
-    }
+    name  = "autoDiscovery.clusterName"
+    value = var.cluster_name
   }
   set {
     name  = "resources.limits.cpu"
