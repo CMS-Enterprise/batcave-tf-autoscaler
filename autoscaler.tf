@@ -14,41 +14,9 @@ resource "helm_release" "autoscaler" {
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
 
-  # Ensure general is the first autoscaling Group
   set {
-    name  = "autoscalingGroups[0].name"
-    value = var.self_managed_node_groups.general.autoscaling_group_name
-  }
-  set {
-    name  = "autoscalingGroups[0].minSize"
-    value = var.self_managed_node_groups.general.autoscaling_group_min_size
-  }
-  set {
-    name  = "autoscalingGroups[0].maxSize"
-    value = var.self_managed_node_groups.general.autoscaling_group_max_size
-  }
-
-  # Iterate over the rest of the self_managed_node_groups
-  dynamic "set" {
-    for_each = local.self_managed_node_sets
-    content {
-      name  = "autoscalingGroups[${set.key + 1}].name"
-      value = set.value.name
-    }
-  }
-  dynamic "set" {
-    for_each = local.self_managed_node_sets
-    content {
-      name  = "autoscalingGroups[${set.key + 1}].minSize"
-      value = set.value.minSize
-    }
-  }
-  dynamic "set" {
-    for_each = local.self_managed_node_sets
-    content {
-      name  = "autoscalingGroups[${set.key + 1}].maxSize"
-      value = set.value.maxSize
-    }
+    name  = "autoDiscovery.clusterName"
+    value = var.cluster_name
   }
   set {
     name  = "resources.limits.cpu"
@@ -83,12 +51,12 @@ resource "helm_release" "autoscaler" {
   }
 
   set {
-    name = "rbac.create"
+    name  = "rbac.create"
     value = "true"
   }
 
-  set  {
-    name = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
+  set {
+    name  = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
     value = module.iam_assumable_role_admin.iam_role_arn
   }
 
@@ -96,6 +64,17 @@ resource "helm_release" "autoscaler" {
   set {
     name = "cloudConfigPath"
     value = "false"
+  set {
+    name  = "extraArgs.expander"
+    value = var.autoscaler_expander_method
+  }
+
+  dynamic "set" {
+    for_each = var.extraArgs
+    content {
+      name  = "extraArgs.${set.key}"
+      value = set.value
+    }
   }
 }
 
