@@ -60,6 +60,10 @@ resource "helm_release" "autoscaler" {
     value = module.iam_assumable_role_admin.iam_role_arn
   }
 
+ # workaround added due to bug in latest version https://github.com/kubernetes/autoscaler/issues/5128
+  set {
+    name = "cloudConfigPath"
+    value = "false"
   set {
     name  = "extraArgs.expander"
     value = var.autoscaler_expander_method
