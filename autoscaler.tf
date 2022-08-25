@@ -64,11 +64,11 @@ resource "helm_release" "autoscaler" {
   set {
     name = "cloudConfigPath"
     value = "false"
+  }
   set {
     name  = "extraArgs.expander"
     value = var.autoscaler_expander_method
   }
-
   dynamic "set" {
     for_each = var.extraArgs
     content {
