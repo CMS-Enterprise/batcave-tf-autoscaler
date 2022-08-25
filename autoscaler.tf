@@ -91,5 +91,11 @@ resource "helm_release" "autoscaler" {
     name = "rbac.serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn"
     value = module.iam_assumable_role_admin.iam_role_arn
   }
+
+ # workaround added due to bug in latest version https://github.com/kubernetes/autoscaler/issues/5128
+  set {
+    name = "cloudConfigPath"
+    value = "false"
+  }
 }
 
