@@ -58,18 +58,18 @@ variable "extraArgs" {
 }
 
 # Pod limit values
-variable "cpu_limit" {
+variable "cpu_limits" {
   default = "50m"
 }
 
-variable "cpu_request" {
+variable "cpu_requests" {
   default = "10m"
 }
 
-variable "memory_limit" {
+variable "memory_limits" {
   default = "256m"
 }
 
-variable "memory_request" {
+variable "memory_requests" {
   default = "50m"
 }

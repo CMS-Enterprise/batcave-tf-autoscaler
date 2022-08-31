@@ -20,19 +20,19 @@ resource "helm_release" "autoscaler" {
   }
   set {
     name  = "resources.limits.cpu"
-    value = var.cpu_limit
+    value = var.cpu_limits
   }
   set {
     name  = "resources.limits.memory"
-    value = var.memory_limit
+    value = var.memory_limits
   }
   set {
     name  = "resources.requests.cpu"
-    value = var.cpu_request
+    value = var.cpu_requests
   }
   set {
     name  = "resources.requests.memory"
-    value = var.memory_request
+    value = var.memory_requests
   }
 
   set {
