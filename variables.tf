@@ -67,7 +67,7 @@ variable "cpu_requests" {
 }
 
 variable "memory_limits" {
-  default = "256m"
+  default = "150m"
 }
 
 variable "memory_requests" {
