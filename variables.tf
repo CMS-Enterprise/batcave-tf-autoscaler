@@ -56,3 +56,20 @@ variable "extraArgs" {
   type        = map(any)
   description = "List of extraArgs values to pass to the autoscaler chart.  See: https://github.com/kubernetes/autoscaler/blob/master/charts/cluster-autoscaler/values.yaml#L165"
 }
+
+# Pod limit values
+variable "cpu_limits" {
+  default = "50m"
+}
+
+variable "cpu_requests" {
+  default = "10m"
+}
+
+variable "memory_limits" {
+  default = "150m"
+}
+
+variable "memory_requests" {
+  default = "50m"
+}
