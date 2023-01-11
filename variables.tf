@@ -73,3 +73,7 @@ variable "memory_limits" {
 variable "memory_requests" {
   default = "50Mi"
 }
+
+variable "replicaCount" {
+  default = "3"
+}
