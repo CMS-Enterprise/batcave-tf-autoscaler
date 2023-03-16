@@ -1,10 +1,11 @@
 locals {
   # List of all node_sets except general (to ensure general is always [0])
-  self_managed_node_sets = [for k, v in var.self_managed_node_groups : {
+  self_managed_node_sets = [
+  for k, v in var.self_managed_node_groups : {
     name    = v.autoscaling_group_name
     minSize = v.autoscaling_group_min_size
     maxSize = v.autoscaling_group_max_size
-    } if k != "general"
+  } if k != "general"
   ]
 }
 resource "helm_release" "autoscaler" {
@@ -60,15 +61,20 @@ resource "helm_release" "autoscaler" {
     value = module.iam_assumable_role_admin.iam_role_arn
   }
 
- # workaround added due to bug in latest version https://github.com/kubernetes/autoscaler/issues/5128
+  # workaround added due to bug in latest version https://github.com/kubernetes/autoscaler/issues/5128
   set {
-    name = "cloudConfigPath"
+    name  = "cloudConfigPath"
     value = "false"
   }
   set {
     name  = "extraArgs.expander"
     value = var.autoscaler_expander_method
   }
+  set {
+    name  = "awsRegion"
+    value = var.aws_region
+  }
+
   dynamic "set" {
     for_each = var.extraArgs
     content {

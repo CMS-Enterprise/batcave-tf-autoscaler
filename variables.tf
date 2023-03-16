@@ -73,3 +73,7 @@ variable "memory_limits" {
 variable "memory_requests" {
   default = "50Mi"
 }
+
+variable "aws_region" {
+  default = "us-east-1"
+}
