@@ -38,16 +38,36 @@ resource "helm_release" "autoscaler" {
 
   set {
     name  = "tolerations[0].key"
-    value = "CriticalAddonsOnly"
+    value = "bat_app"
   }
 
   set {
     name  = "tolerations[0].operator"
-    value = "Exists"
+    value = "Equal"
+  }
+
+  set {
+    name  = "tolerations[0].value"
+    value = "utility_belt"
   }
 
   set {
     name  = "tolerations[0].effect"
+    value = "NoSchedule"
+  }
+
+  set {
+    name  = "tolerations[1].key"
+    value = "CriticalAddonsOnly"
+  }
+
+  set {
+    name  = "tolerations[1].operator"
+    value = "Exists"
+  }
+
+  set {
+    name  = "tolerations[1].effect"
     value = "NoSchedule"
   }
 
