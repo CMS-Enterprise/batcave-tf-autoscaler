@@ -57,6 +57,21 @@ resource "helm_release" "autoscaler" {
   }
 
   set {
+    name  = "tolerations[1].key"
+    value = "CriticalAddonsOnly"
+  }
+
+  set {
+    name  = "tolerations[1].operator"
+    value = "Exists"
+  }
+
+  set {
+    name  = "tolerations[1].effect"
+    value = "NoSchedule"
+  }
+
+  set {
     name  = "rbac.create"
     value = "true"
   }
