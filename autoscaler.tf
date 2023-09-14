@@ -1,12 +1,22 @@
 locals {
   # List of all node_sets except general (to ensure general is always [0])
   self_managed_node_sets = [
-  for k, v in var.self_managed_node_groups : {
-    name    = v.autoscaling_group_name
-    minSize = v.autoscaling_group_min_size
-    maxSize = v.autoscaling_group_max_size
-  } if k != "general"
+    for k, v in var.self_managed_node_groups : {
+      name    = v.autoscaling_group_name
+      minSize = v.autoscaling_group_min_size
+      maxSize = v.autoscaling_group_max_size
+    } if k != "general"
   ]
+
+  version_tag_map = {
+    # Update the map for new versions here: https://github.com/kubernetes/autoscaler/releases
+    "1.24" = "v1.24.2"
+    "1.25" = "v1.25.3"
+    "1.26" = "v1.26.4"
+    "1.27" = "v1.27.3"
+    "1.28" = "v1.28.0"
+  }
+  latest_cluster_version = sort(keys(local.version_tag_map))[length(local.version_tag_map) - 1]
 }
 resource "helm_release" "autoscaler" {
   namespace = var.helm_namespace
@@ -15,6 +25,10 @@ resource "helm_release" "autoscaler" {
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
 
+  set {
+    name  = "image.tag"
+    value = lookup(local.version_tag_map, var.cluster_version, local.latest_cluster_version)
+  }
   set {
     name  = "autoDiscovery.clusterName"
     value = var.cluster_name
@@ -103,4 +117,3 @@ resource "helm_release" "autoscaler" {
     }
   }
 }
-
