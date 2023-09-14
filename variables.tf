@@ -1,6 +1,10 @@
 variable "cluster_name" {}
 variable "cluster_endpoint" {}
 variable "cluster_certificate_authority_data" {}
+variable "cluster_version" {
+  default     = ""
+  description = "The version of the cluster.  Used to determine the version of the autoscaler to deploy. Defaults to the most recent version known by this module."
+}
 
 ### Karpenter IAM variables
 variable "worker_iam_role_name" {
