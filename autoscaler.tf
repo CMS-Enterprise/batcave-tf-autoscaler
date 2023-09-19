@@ -17,6 +17,7 @@ locals {
     "1.28" = "v1.28.0"
   }
   latest_cluster_version = sort(keys(local.version_tag_map))[length(local.version_tag_map) - 1]
+  latest_image_version   = lookup(local.version_tag_map, local.latest_cluster_version, "v1.28.0")
 }
 resource "helm_release" "autoscaler" {
   namespace = var.helm_namespace
@@ -26,8 +27,16 @@ resource "helm_release" "autoscaler" {
   chart      = "cluster-autoscaler"
 
   set {
+    name  = "serviceMonitor.enabled"
+    value = "true"
+  }
+  set {
+    name  = "prometheusRule.enabled"
+    value = "true"
+  }
+  set {
     name  = "image.tag"
-    value = lookup(local.version_tag_map, var.cluster_version, local.latest_cluster_version)
+    value = lookup(local.version_tag_map, var.cluster_version, local.latest_image_version)
   }
   set {
     name  = "autoDiscovery.clusterName"
