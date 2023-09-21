@@ -28,11 +28,11 @@ resource "helm_release" "autoscaler" {
 
   set {
     name  = "serviceMonitor.enabled"
-    value = "true"
+    value = "false"
   }
   set {
     name  = "prometheusRule.enabled"
-    value = "true"
+    value = "false"
   }
   set {
     name  = "image.tag"
