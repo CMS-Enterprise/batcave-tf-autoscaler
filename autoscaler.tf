@@ -117,10 +117,6 @@ resource "helm_release" "autoscaler" {
     name  = "awsRegion"
     value = var.aws_region
   }
-  set {
-    name = "vpa.enabled"
-    value = "true"
-  }
   
   dynamic "set" {
     for_each = var.extraArgs
