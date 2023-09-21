@@ -81,3 +81,8 @@ variable "memory_requests" {
 variable "aws_region" {
   default = "us-east-1"
 }
+
+variable "monitoring_enabled" {
+  default     = false
+  description = "Enable monitoring for the cluster autoscaler; Note that this should _not_ be enabled before bigbang is deployed, as it will fail to deploy since the monitoring namespace does not exist yet."
+}
