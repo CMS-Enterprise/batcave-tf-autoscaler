@@ -118,7 +118,7 @@ resource "helm_release" "autoscaler" {
     value = var.aws_region
   }
   set {
-    name = "vpa,enabled"
+    name = "vpa.enabled"
     value = "true"
   }
   
