@@ -88,11 +88,6 @@ variable "additional_values" {
   type        = map(any)
 }
 
-variable "pod_disruption_budget_api_version" {
-  default     = "policy/v1"
-  description = "The apiVersion to use for the pod disruption budget.  Defaults to policy/v1"
-}
-
 variable "monitoring_enabled" {
   default     = false
   description = "Enable monitoring for the cluster autoscaler; Note that this should _not_ be enabled before bigbang is deployed, as it will fail to deploy since the monitoring namespace does not exist yet."

@@ -25,6 +25,7 @@ resource "helm_release" "autoscaler" {
   name       = "autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
+  version    = "9.29.3"
 
   set {
     name  = "serviceMonitor.enabled"
@@ -116,11 +117,6 @@ resource "helm_release" "autoscaler" {
   set {
     name  = "awsRegion"
     value = var.aws_region
-  }
-
-  set {
-    name  = "podDisruptionBudget.apiVersion"
-    value = var.pod_disruption_budget_api_version
   }
 
   dynamic "set" {
