@@ -118,6 +118,19 @@ resource "helm_release" "autoscaler" {
     value = var.aws_region
   }
 
+  set {
+    name  = "podDisruptionBudget.apiVersion"
+    value = var.pod_disruption_budget_api_version
+  }
+
+  dynamic "set" {
+    for_each = var.additional_values
+    content {
+      name  = set.key
+      value = set.value
+    }
+  }
+
   dynamic "set" {
     for_each = var.extraArgs
     content {
