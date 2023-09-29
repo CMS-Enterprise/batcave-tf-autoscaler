@@ -25,6 +25,7 @@ resource "helm_release" "autoscaler" {
   name       = "autoscaler"
   repository = "https://kubernetes.github.io/autoscaler"
   chart      = "cluster-autoscaler"
+  version    = "9.29.3"
 
   set {
     name  = "serviceMonitor.enabled"
@@ -116,6 +117,14 @@ resource "helm_release" "autoscaler" {
   set {
     name  = "awsRegion"
     value = var.aws_region
+  }
+
+  dynamic "set" {
+    for_each = var.additional_values
+    content {
+      name  = set.key
+      value = set.value
+    }
   }
 
   dynamic "set" {
