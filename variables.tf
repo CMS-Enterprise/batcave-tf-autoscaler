@@ -1,55 +1,33 @@
-variable "cluster_name" {}
-variable "cluster_endpoint" {}
-variable "cluster_certificate_authority_data" {}
+variable "cluster_name" {
+  type = string
+}
+variable "cluster_endpoint" {
+  type = string
+}
+variable "cluster_certificate_authority_data" {
+  type = string
+}
 variable "cluster_version" {
   default     = ""
+  type        = string
   description = "The version of the cluster.  Used to determine the version of the autoscaler to deploy. Defaults to the most recent version known by this module."
-}
-
-### Karpenter IAM variables
-variable "worker_iam_role_name" {
-  default = ""
 }
 
 variable "iam_path" {
   default = "/delegatedadmin/developer/"
+  type    = string
 }
 
 variable "permissions_boundary" {
   default = "arn:aws:iam::373346310182:policy/cms-cloud-admin/developer-boundary-policy"
+  type    = string
 }
 
 
 ### Helm variables
 variable "helm_namespace" {
   default = "kube-system"
-}
-
-variable "helm_name" {
-  default = "auto-scaler"
-}
-
-variable "self_managed_node_groups" {
-  type = map(any)
-}
-
-# ENIConfig Variables
-variable "vpc_eni_subnets" {
-  type = map(any)
-}
-
-variable "worker_security_group_id" {
-  type = string
-}
-
-variable "rotate_nodes_after_eniconfig_creation" {
-  type    = bool
-  default = true
-}
-
-variable "cluster_oidc_issuer_url" {
   type    = string
-  default = ""
 }
 
 variable "oidc_provider_arn" {
@@ -72,22 +50,27 @@ variable "extraArgs" {
 # Pod limit values
 variable "cpu_limits" {
   default = "50m"
+  type    = string
 }
 
 variable "cpu_requests" {
   default = "10m"
+  type    = string
 }
 
 variable "memory_limits" {
   default = "512Mi"
+  type    = string
 }
 
 variable "memory_requests" {
   default = "50Mi"
+  type    = string
 }
 
 variable "aws_region" {
   default = "us-east-1"
+  type    = string
 }
 
 variable "additional_values" {
@@ -98,5 +81,6 @@ variable "additional_values" {
 
 variable "monitoring_enabled" {
   default     = false
+  type        = bool
   description = "Enable monitoring for the cluster autoscaler; Note that this should _not_ be enabled before bigbang is deployed, as it will fail to deploy since the monitoring namespace does not exist yet."
 }
