@@ -47,7 +47,15 @@ variable "rotate_nodes_after_eniconfig_creation" {
   default = true
 }
 
-variable "cluster_oidc_issuer_url" {}
+variable "cluster_oidc_issuer_url" {
+  type    = string
+  default = ""
+}
+
+variable "oidc_provider_arn" {
+  type    = string
+  default = ""
+}
 
 variable "autoscaler_expander_method" {
   default     = "least-waste"
