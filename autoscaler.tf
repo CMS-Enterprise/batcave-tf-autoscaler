@@ -3,9 +3,10 @@ locals {
     # Update the map for new versions here: https://github.com/kubernetes/autoscaler/releases
     "1.24" = "v1.24.2"
     "1.25" = "v1.25.3"
-    "1.26" = "v1.26.4"
-    "1.27" = "v1.27.3"
-    "1.28" = "v1.28.0"
+    "1.26" = "v1.26.6"
+    "1.27" = "v1.27.5"
+    "1.28" = "v1.28.2"
+    "1.29" = "v1.29.0"
   }
   latest_cluster_version = sort(keys(local.version_tag_map))[length(local.version_tag_map) - 1]
   latest_image_version   = lookup(local.version_tag_map, local.latest_cluster_version, "v1.28.0")
